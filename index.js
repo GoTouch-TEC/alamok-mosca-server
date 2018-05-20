@@ -1,5 +1,5 @@
 var mosca = require('mosca');
-var axios = require('axios');
+const LoopbackClient = require('./LoopBackClient.js');
 var ascoltatore = {
   //using ascoltatore
   type: 'mongo',
@@ -12,24 +12,44 @@ var settings = {
   port: 1884,
   backend: ascoltatore
 };
+
+var loopbackClient = new LoopbackClient(
+  'http://13.59.16.98:3000','mqttpub','mqttpub');
+
+
+loopbackClient.login().then(function(data){
+  console.log("Token on client",data);
+})
+
+
 var server = new mosca.Server(settings);
-//Login user:
-var tokenSession = '';
-axios.post('http://13.59.16.98:3000/api/AlamokUsers/login',{"username":"mqttpub","password":"mqttpub" })
-.then(function(data){console.log("Data Loopback",data.data);})
-.catch(function(error){console.log("Error Looback", error);});
-
-
 
 server.on('clientConnected', function(client) {
-
     console.log('client connected', client.id);
 });
 
 // fired when a message is received
 server.on('published', function(packet, client) {
+  
   var jsonData =  JSON.stringify(packet.payload.toString('utf8'));
-  console.log('Published',jsonData);
+  console.log(jsonData);
+  loopbackClient.post({
+    "latitude": jsonData.latitude,
+    "longitude": jsonData.longitude,
+    "date": jsonData.time_utc,
+    "speed": jsonData.speed,
+    "altitude": jsonData.altitude,
+    "value": packet.payload,
+    "topic": "options",
+    "options": {},
+    "deviceId": "string"
+  },'/api/Locations',
+  function(data){
+    console.log('POST ','OK');
+  },
+  function(error){
+    console.log('POST','NOT OK');
+  });
 });
 
 server.on('ready', setup);
