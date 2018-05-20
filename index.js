@@ -30,25 +30,30 @@ server.on('clientConnected', function(client) {
 
 // fired when a message is received
 server.on('published', function(packet, client) {
-  
-  var jsonData =  JSON.stringify(packet.payload.toString('utf8'));
-  console.log(jsonData);
-  loopbackClient.post({
-    "latitude": jsonData.latitude,
-    "longitude": jsonData.longitude,
-    "date": jsonData.time_utc,
-    "speed": jsonData.speed,
-    "altitude": jsonData.altitude,
-    "value": packet.payload,
-    "topic": "options",
-    "options": {},
-    "deviceId": "string"
-  },'/api/Locations',
-  function(data){
-    console.log('POST ','OK');
+  if(packet.topic == "fonagotouch"){
+
+    var jsonData =JSON.parse(packet.payload.toString('utf8').replace(/\'/g,'\"'));
+    var data = {
+      latitude: jsonData.latitude,
+      longitude: jsonData.longitude,
+      date: jsonData.date_utc,
+      speed: jsonData.speed,
+      altitude: jsonData.altitude,
+      value: packet.payload,
+      topic: packet.topic,
+      options: { 
+        messageId:packet.messageId,
+        qos : packet.qos,
+        retain : packet.retain},
+      deviceId: 'device1'
+    };
+  }
+  loopbackClient.post(data,'/api/Locations',
+  function(response){
+    console.log('POST ','OK',data.options.messageId);
   },
   function(error){
-    console.log('POST','NOT OK');
+    console.log('POST','NOT OK','NO VALID DATA',data);
   });
 });
 
