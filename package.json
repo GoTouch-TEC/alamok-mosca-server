@@ -1,0 +1,28 @@
+{
+  "name": "alamok-mosca-server",
+  "version": "1.0.0",
+  "description": "Mosca Server for Alamok GoTouch",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/junavarro/alamok-mosca-server.git"
+  },
+  "keywords": [
+    "TEC",
+    "Alamok",
+    "FEITEC"
+  ],
+  "author": "GoTouch",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/junavarro/alamok-mosca-server/issues"
+  },
+  "homepage": "https://github.com/junavarro/alamok-mosca-server#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "mosca": "^2.8.1"
+  }
+}
