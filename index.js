@@ -41,6 +41,12 @@ server.on('published', function(packet, client) {
       altitude: jsonData.altitude,
       value: JSON.parse(JSON.stringify(packet.payload.toString('utf8'))),
       topic: packet.topic,
+      gpxElement :
+            '<trkpt lat='+'"'+jsonData.latitude+'"'
+                    +' lon='+'"'+jsonData.latitude+'"'+'>'
+                    +"<ele>"+jsonData.altitude+"</ele>"
+                    +"<time>"+jsonData.date_utc+"</time>"
+            +'</trkpt>',
       options: { 
         messageId:packet.messageId,
         qos : packet.qos,
