@@ -14,7 +14,7 @@ var settings = {
 };
 
 var loopbackClient = new LoopbackClient(
-  'http://13.59.16.98:3000','mqttpub','mqttpub');
+  'http://localhost:3000','mqttpub','mqttpub');
 
 
 loopbackClient.login().then(function(data){
@@ -39,7 +39,7 @@ server.on('published', function(packet, client) {
       date: jsonData.date_utc,
       speed: jsonData.speed,
       altitude: jsonData.altitude,
-      value: packet.payload,
+      value: JSON.parse(JSON.stringify(packet.payload.toString('utf8'))),
       topic: packet.topic,
       options: { 
         messageId:packet.messageId,
@@ -47,14 +47,19 @@ server.on('published', function(packet, client) {
         retain : packet.retain},
       deviceId: 'device1'
     };
+    loopbackClient.post(data,'/api/Locations',
+    function(response){
+      console.log('\x1Bc');
+      console.log("\x1b[33m%s\x1b[0m",new Date(),"\x1b[32mPOST OK\x1b[0m");
+      console.log("\x1b[35m",data.options.messageId);
+    },
+    function(error){
+      console.log('\x1Bc');
+      console.log("\x1b[33m%s\x1b[0m",new Date(),"\x1b[31mPOST NOT OK\x1b[0m");
+      console.log("\x1b[35m%s\x1b[0m",'NO VALID DATA',error);
+    });
   }
-  loopbackClient.post(data,'/api/Locations',
-  function(response){
-    console.log('POST ','OK',data.options.messageId);
-  },
-  function(error){
-    console.log('POST','NOT OK','NO VALID DATA',data);
-  });
+  
 });
 
 server.on('ready', setup);
