@@ -42,16 +42,16 @@ server.on('published', function(packet, client) {
       value: JSON.parse(JSON.stringify(packet.payload.toString('utf8'))),
       topic: packet.topic,
       gpxElement :
-            '<trkpt lat='+'"'+jsonData.latitude+'"'
-                    +' lon='+'"'+jsonData.latitude+'"'+'>'
+            "<trkpt lat="+"\""+jsonData.latitude+"\""
+                    +" lon="+"\""+jsonData.latitude+"\""+">"
                     +"<ele>"+jsonData.altitude+"</ele>"
                     +"<time>"+jsonData.date_utc+"</time>"
-            +'</trkpt>',
+            +"</trkpt>",
       options: { 
         messageId:packet.messageId,
         qos : packet.qos,
         retain : packet.retain},
-      deviceId: 'device1'
+      deviceId: jsonData.deviceId
     };
     loopbackClient.post(data,'/api/Locations',
     function(response){
