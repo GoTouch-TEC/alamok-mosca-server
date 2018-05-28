@@ -23,6 +23,7 @@
   "homepage": "https://github.com/junavarro/alamok-mosca-server#readme",
   "dependencies": {
     "axios": "^0.18.0",
-    "mosca": "^2.8.1"
+    "mosca": "^2.8.1",
+    "xml2js": "^0.4.19"
   }
 }

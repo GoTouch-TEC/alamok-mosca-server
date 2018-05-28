@@ -36,7 +36,7 @@ server.on('published', function(packet, client) {
     var data = {
       latitude: jsonData.latitude,
       longitude: jsonData.longitude,
-      date: jsonData.date_utc,
+      date: jsonData.date,
       speed: jsonData.speed,
       altitude: jsonData.altitude,
       value: JSON.parse(JSON.stringify(packet.payload.toString('utf8'))),
@@ -45,7 +45,7 @@ server.on('published', function(packet, client) {
             "<trkpt lat="+"\""+jsonData.latitude+"\""
                     +" lon="+"\""+jsonData.latitude+"\""+">"
                     +"<ele>"+jsonData.altitude+"</ele>"
-                    +"<time>"+jsonData.date_utc+"</time>"
+                    +"<time>"+jsonData.date+"</time>"
             +"</trkpt>",
       options: { 
         messageId:packet.messageId,
