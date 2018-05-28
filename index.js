@@ -57,7 +57,7 @@ server.on('published', function(packet, client) {
     function(response){
       console.log('\x1Bc');
       console.log("\x1b[33m%s\x1b[0m",new Date(),"\x1b[32mPOST OK\x1b[0m");
-      console.log("\x1b[35m",data.options.messageId);
+      console.log("\x1b[35m",data.options.messageId,jsonData.deviceId );
     },
     function(error){
       console.log('\x1Bc');
